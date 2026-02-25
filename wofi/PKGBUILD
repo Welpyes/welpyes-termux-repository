@@ -1,0 +1,27 @@
+# Maintainer: Generic Maintainer <maintainer@example.com>
+pkgname=wofi-git
+pkgver=1.4.1
+pkgrel=1
+pkgdesc="A launcher/menu program for wlroots based wayland compositors such as sway (fork of scoopta/wofi)"
+arch=('x86_64' 'aarch64' 'armv7h')
+url="https://github.com/SimplyCEO/wofi"
+license=('GPL3')
+depends=('gtk3' 'libwayland')
+makedepends=('git' 'ninja' 'python' 'pkg-config' 'libwayland-protocols')
+provides=('wofi')
+conflicts=('wofi')
+source=("git+$url.git")
+sha256sums=('SKIP')
+
+prepare(){
+  pip install meson
+}
+
+build() {
+  meson setup --prefix=$PREFIX --buildtype=release wofi build
+  ninja -C build
+}
+
+package() {
+  DESTDIR="$pkgdir" ninja -C build install
+}
