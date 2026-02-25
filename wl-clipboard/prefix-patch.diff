@@ -1,0 +1,13 @@
+diff --git a/src/util/files.c b/src/util/files.c
+index eade589..7f1b4db 100644
+--- a/src/util/files.c
++++ b/src/util/files.c
+@@ -243,7 +243,7 @@ char *infer_mime_type_from_name(const char *file_path) {
+ /* Returns the name of a new file */
+ char *dump_stdin_into_a_temp_file() {
+     /* Create a temp directory to host out file */
+-    char dirpath[] = "/tmp/wl-copy-buffer-XXXXXX";
++    char dirpath[] = "/data/data/com.termux/files/usr/tmp/wl-copy-buffer-XXXXXX";
+     if (mkdtemp(dirpath) != dirpath) {
+         perror("mkdtemp");
+         exit(1);

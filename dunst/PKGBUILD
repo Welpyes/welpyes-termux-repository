@@ -1,0 +1,26 @@
+pkgname=dunst
+pkgver=1.13.1
+pkgrel=1
+pkgdesc="Lightweight and customizable notification daemon"
+arch=('aarch64')
+url="https://dunst-project.org"
+license=('BSD')
+depends=('dbus' 'libxinerama' 'libxrandr' 'libxss' 'glib' 'pango' 'libcairo' 'libxdg-basedir')
+makedepends=( 'python' 'ninja' 'pkg-config')
+optdepends=('libnotify: for dunstify')
+source=("https://github.com/dunst-project/dunst/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+    pip install meson
+    cd "${pkgname}-${pkgver}"
+    LDFLAGS='-landroid-wordexp' meson setup build \
+        --prefix=$PREFIX \
+        --buildtype=plain
+    ninja -C build
+}
+
+package() {
+    cd "${pkgname}-${pkgver}"
+    DESTDIR="$pkgdir" ninja -C build install
+}

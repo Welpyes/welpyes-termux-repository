@@ -1,0 +1,35 @@
+# Maintainer: Your Name <youremail@example.com>
+pkgname=wl-clipboard
+pkgver=2.2.1
+pkgrel=1
+pkgdesc="Command-line copy/paste utilities for Wayland"
+arch=('aarch64' 'arm' 'x86_64')
+url="https://github.com/bugaevc/wl-clipboard"
+license=('GPL3')
+depends=('libwayland')
+makedepends=('python' 'ninja' 'libwayland-protocols')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/bugaevc/$pkgname/archive/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+
+prepare() {
+  pip install meson
+  cd "$pkgname-$pkgver"
+  # This applies the patch automatically before building
+  patch -p1 -i "$srcdir/../prefix-patch.diff"
+}
+
+build() {
+  # We use the Termux $PREFIX to ensure it doesn't try to touch /usr
+  meson setup build "$pkgname-$pkgver" \
+    --prefix="$PREFIX" \
+    --buildtype=release \
+    -Dfishcompletiondir="$PREFIX/share/fish/vendor_completions.d" \
+    -Dzshcompletiondir="$PREFIX/share/zsh/site-functions"
+    
+  ninja -C build
+}
+
+package() {
+  DESTDIR="$pkgdir" ninja -C build install
+}
