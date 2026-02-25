@@ -1,0 +1,30 @@
+# Maintainer: Labwc Team
+pkgname=labwc-tweaks-git
+_pkgname=labwc-tweaks
+pkgver=0.1.0.r371.g0125a29
+pkgrel=1
+pkgdesc="A GUI settings application for labwc"
+arch=('aarch64' 'x86_64')
+url="https://github.com/labwc/labwc-tweaks"
+license=('GPL2')
+depends=('qt6-qtbase' 'libxml2' 'glib' 'qt6-qtbase-gtk-platformtheme')
+makedepends=('cmake' 'qt6-qttools' 'git')
+provides=("${_pkgname}")
+conflicts=("${_pkgname}")
+source=("git+${url}.git#branch=master")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/${_pkgname}"
+  printf "0.1.0.r%s.g%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  # We set CMAKE_SYSTEM_NAME=Linux to avoid Android-specific CMake logic in Termux
+  cmake -B build -S "${_pkgname}" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_SYSTEM_NAME=Linux -W no-dev
+  cmake --build build
+}
+
+package() {
+  DESTDIR="${pkgdir}" cmake --install build
+}
