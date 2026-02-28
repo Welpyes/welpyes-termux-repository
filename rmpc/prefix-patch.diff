@@ -1,0 +1,24 @@
+diff --git a/src/ui/image/ueberzug.rs b/src/ui/image/ueberzug.rs
+index a2ac6de..accd7c5 100644
+--- a/src/ui/image/ueberzug.rs
++++ b/src/ui/image/ueberzug.rs
+@@ -37,8 +37,8 @@ struct UeberzugDaemon {
+ 
+ const IDENTIFIER: &str = "rmpc-albumart";
+ const PID_FILE_TIMEOUT: Duration = Duration::from_secs(5);
+-const UEBERZUG_ALBUM_ART_PATH: &str = "/tmp/rmpc/albumart";
+-const UEBERZUG_ALBUM_ART_DIR: &str = "/tmp/rmpc";
++const UEBERZUG_ALBUM_ART_PATH: &str = "/data/data/com.termux/files/usr/tmp/rmpc/albumart";
++const UEBERZUG_ALBUM_ART_DIR: &str = "/data/data/com.termux/files/usr/tmp/rmpc";
+ 
+ #[derive(Debug)]
+ pub enum Layer {
+@@ -282,7 +282,7 @@ pub struct Pid(i32);
+ 
+ impl Pid {
+     fn as_socket_path(self) -> String {
+-        format!("/tmp/ueberzugpp-{}.socket", self.0)
++        format!("/data/data/com.termux/files/usr/tmp/ueberzugpp-{}.socket", self.0)
+     }
+ }
+ 

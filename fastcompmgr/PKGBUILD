@@ -1,0 +1,30 @@
+# Maintainer: welpyes
+pkgname=fastcompmgr-git
+_pkgname=fastcompmgr
+pkgver=0.1.0.r157.gf806c95
+pkgrel=1
+pkgdesc="Fast compositor for X11"
+arch=('aarch64' 'x86_64')
+url="https://github.com/welpyes/fastcompmgr"
+license=('GPL2')
+depends=( 'ffmpeg' )
+makedepends=( 'clang' 'make' 'libxcomposite' 'libxdamage' 'libx11' 'libxfixes' 'libxrender' 'pkg-config' )
+provides=("${_pkgname}")
+conflicts=("${_pkgname}")
+source=("git+${url}.git#branch=master")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/${_pkgname}"
+  printf "0.1.0.r%s.g%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd "${srcdir}/${_pkgname}"
+  make
+}
+
+package() {
+  cd "${srcdir}/${_pkgname}"
+  DESTDIR="${pkgdir}" make install PREFIX=$PREFIX
+}
