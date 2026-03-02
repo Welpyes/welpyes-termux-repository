@@ -1,7 +1,7 @@
 # Maintainer: welpyes
 pkgname=fastcompmgr-git
 _pkgname=fastcompmgr
-pkgver=0.1.0.r179.gcf64be8
+pkgver=0.1.0.r167.g3be3aca
 pkgrel=1
 pkgdesc="Fast compositor for X11"
 arch=('aarch64' 'x86_64')
@@ -21,7 +21,6 @@ pkgver() {
 
 build() {
   cd "${srcdir}/${_pkgname}"
-  git submodule update --init --recursive
   make
 }
 
