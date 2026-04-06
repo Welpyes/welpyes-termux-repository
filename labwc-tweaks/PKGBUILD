@@ -1,7 +1,7 @@
 # Maintainer: Labwc Team
 pkgname=labwc-tweaks-git
 _pkgname=labwc-tweaks
-pkgver=0.1.0.r371.g0125a29
+pkgver=0.1.0.r376.g0d72116
 pkgrel=1
 pkgdesc="A GUI settings application for labwc"
 arch=('aarch64' 'x86_64')

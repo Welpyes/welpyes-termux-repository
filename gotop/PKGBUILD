@@ -1,0 +1,25 @@
+pkgname=gotop-git
+pkgver=4.2.0.r147.g154cc77
+pkgrel=1
+pkgdesc="A terminal based graphical activity monitor inspired by gtop and vtop"
+arch=('aarch64')
+url="https://github.com/welpyes/gotop"
+license=('MIT')
+makedepends=('golang' 'git')
+provides=('gotop')
+conflicts=('gotop')
+source=("git+$url.git")
+sha256sums=('SKIP')
+
+
+build() {
+  cd "$srcdir/gotop"
+  export CGO_ENABLED=0
+  go build -ldflags "-X main.Version=v$pkgver" -o gotop ./cmd/gotop
+}
+
+package() {
+  cd "$srcdir/gotop"
+  install -Dm755 gotop "$pkgdir$PREFIX/bin/gotop"
+  install -Dm644 LICENSE "$pkgdir$PREFIX/share/licenses/$pkgname/LICENSE"
+}

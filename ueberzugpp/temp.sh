@@ -1,6 +1,6 @@
 #!/bin/bash
 pkg upgrade
-pkg install build-essential opencv range-v3 libvips git cmake spdlog
+pkg install build-essential opencv range-v3 libvips git cmake libtbb libspdlog
 git clone https://github.com/jstkdng/ueberzugpp.git
 cd ueberzugpp
 git apply -v << 'EOF'
@@ -18,5 +18,5 @@ EOF
 mkdir build
 cd build
 export CXXFLAGS="-I$PREFIX/include/opencv4"
-cmake ..
-make
+cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX
+make install
