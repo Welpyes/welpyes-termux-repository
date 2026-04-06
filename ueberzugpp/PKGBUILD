@@ -1,0 +1,36 @@
+pkgname=ueberzugpp-git
+pkgver=2.9.6.r0.g8b7a4c7
+pkgrel=1
+pkgdesc="A C++ rewrite of ueberzug"
+arch=('aarch64')
+url="https://github.com/jstkdng/ueberzugpp"
+license=('GPL3')
+depends=('opencv' 'libvips' 'libtbb' 'libspdlog')
+makedepends=('git' 'cmake' 'build-essential' 'range-v3')
+provides=('ueberzugpp' 'ueberzug')
+conflicts=('ueberzugpp' 'ueberzug')
+source=("git+$url.git")
+sha256sums=('SKIP')
+
+prepare() {
+  cd "$srcdir/ueberzugpp"
+  # Remove -Werror as seen in temp.sh
+  sed -i 's/set(PROJECT_WARNINGS_CXX -Wall -Wextra -Wpedantic -Werror)//' CMakeLists.txt
+}
+
+build() {
+  cd "$srcdir/ueberzugpp"
+  export CXXFLAGS="$CXXFLAGS -I$PREFIX/include/opencv4"
+  
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=$PREFIX \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DENABLE_OPENCV=ON
+    
+  cmake --build build
+}
+
+package() {
+  cd "$srcdir/ueberzugpp"
+  DESTDIR="$pkgdir" cmake --install build
+}
