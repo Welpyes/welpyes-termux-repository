@@ -1,0 +1,11 @@
+pkgname=rmpc
+pkgver=2.2.1
+pkgrel=1
+pkgdesc="Command-line copy/paste utilities for Wayland"
+arch=('aarch64' 'arm' 'x86_64')
+url="https://github.com/bugaevc/wl-clipboard"
+license=('GPL3')
+depends=('libwayland')
+makedepends=('python' 'ninja' 'libwayland-protocols')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/bugaevc/$pkgname/archive/v$pkgver.tar.gz")
+sha256sums=('SKIP')
