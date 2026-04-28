@@ -20,14 +20,22 @@ prepare() {
 
 build() {
   cd "$srcdir/ueberzugpp"
-  export CXXFLAGS="$CXXFLAGS -I$PREFIX/include/opencv4"
   
+  # 1. Force the compiler to see the shim header in EVERY file
+  # 2. Force the linker to include shmemu for everything
+  export CXXFLAGS="$CXXFLAGS -I$PREFIX/include/opencv4 -include shmemu.h"
+  export LDFLAGS="$LDFLAGS -lshmemu"
+
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -DCMAKE_BUILD_TYPE=Release \
-    -DENABLE_OPENCV=ON
+    -DENABLE_WAYLAND=ON \
+    -DENABLE_OPENCV=ON \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" \
+    -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"
     
-  cmake --build build
+  cmake --build build -j8
 }
 
 package() {
